@@ -6,7 +6,7 @@ set background=dark
 set t_co=256
 set termguicolors
 
-set number
+set rnu
 
 set mouse=a
 
