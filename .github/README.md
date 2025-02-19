@@ -21,6 +21,13 @@ git clone git@github.com:mandulaj/dotfiles.git .dotfiles && cd .dotfiles
 ./bootstrap.sh
 ```
 
+## Modules
 
+### [git](./git)
+### [i3](./i3)
+### [nvim](./nvim)
+### [tmux](./tmux)
+### [vim](./vim)
+### [zsh](./zsh)
 
 
