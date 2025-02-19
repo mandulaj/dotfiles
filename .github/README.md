@@ -7,7 +7,7 @@ My Personal dotfiles.
 * Should be fast to bootstrap and deploy
 * Should be modular and flexible for different systems
 
-![terminal]("./assets/terminal.png")
+![terminal](.assets/terminal.png)
 
 # Get started
 To install the dotfiles on a new system, run the following:
