@@ -9,13 +9,13 @@ My Personal dotfiles.
 
 ![terminal](.assets/terminal.png)
 
-# Get started
+## Get started
 To install the dotfiles on a new system, run the following:
 
-## Prerequisits
+### Prerequisits
 You must have `git` and `stow` installed for the rest to work
 
-## Installation
+### Installation
 ```bash
 git clone git@github.com:mandulaj/dotfiles.git .dotfiles && cd .dotfiles
 ./bootstrap.sh
