@@ -1,14 +1,20 @@
+#if [ ! "$TMUX" ]; then
+
+#        tmux attach -t main || tmux new -s main
+#fi
+
+
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.config/emacs/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+export AGNOSTER_DIR_BG=cyan
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
 ZSH_THEME="agnoster"
 
 # Set list of themes to pick from when loading at random
@@ -20,6 +26,7 @@ ZSH_THEME="agnoster"
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
+DISABLE_AUTO_UPDATE="true"
 # Uncomment the following line to use hyphen-insensitive completion.
 # Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
@@ -48,7 +55,7 @@ ZSH_THEME="agnoster"
 # You can also set it to another string to have that shown instead of the default red dots.
 # e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
 # Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -62,7 +69,7 @@ ZSH_THEME="agnoster"
 # or set a custom format using the strftime function format specifications,
 # see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
-
+#ZSH_TMUX_AUTOSTART=true
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
@@ -72,7 +79,7 @@ ZSH_THEME="agnoster"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-	git git-extras colored-man-pages sudo thefuck z
+	git git-extras colored-man-pages ssh catimg thefuck z zsh-autosuggestions zsh-syntax-highlighting vi-mode
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -82,14 +89,14 @@ source $ZSH/oh-my-zsh.sh
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+if [[ -n $SSH_CONNECTION ]]; then
+   export EDITOR='vim'
+else
+   export EDITOR='nvim'
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -105,10 +112,12 @@ source $ZSH/oh-my-zsh.sh
 #
 #
 export LD_LIBRARY_PATH=LD_LIBRARY_PATH:/usr/local/lib
-export PATH=$PATH:/home/jakub/git/openeb/build/bin
+export PATH=$PATH:$HOME/git/openeb/build/bin
+export PATH=$PATH:/opt/stm32cubeclt/STLink-gdb-server/bin
+
 source /home/jakub/git/openeb/build/utils/scripts/setup_env.sh
 
-alias metavision_studio='xhost "+local:*"; docker run -it  --privileged  -v /dev/bus/usb:/dev/bus/usb -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v $(pwd):/home/$USER/metavision -v /home/$USER/.config/Metavision\ Studio:/home/$USER/.config/Metavision\ Studio -e GDK_SCALE=0.5 --rm --net=host --shm-size 100000000000 metavision /bin/bash -c "metavision_studio; while /usr/bin/pgrep metavision >/dev/null; do sleep 1; done"'
+alias metavision_studio='xhost "+local:*"; docker run -it  --privileged  -v /dev/bus/usb:/dev/bus/usb -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v $(pwd):/home/$USER/metavision -v /home/$USER/.config/Metavision\ Studio:/home/$USER/.config/Metavision\ Studio -e GDK_SCALE=0.5 --rm --net=host --shm-size 100000000000 metavisionsdk22_${USER} /bin/bash -c "metavision_studio; while /usr/bin/pgrep metavision >/dev/null; do sleep 1; done"'
 
 #Ros Docker
 
@@ -122,26 +131,25 @@ alias rosbash2='docker run -it --rm --privileged --ipc=host --net=host -e DISPLA
 
 alias pac=yay
 alias sub=subl3
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias sc='systemctl'
 alias ssc='sudo systemctl'
 alias sudo='sudo '
 alias diff=colordiff
-alias mytools='pygmentize -O style=native /home/jakub/Documents/Personal/Cheatsheets/commands/1_my_tools.md'
+alias mytools='pygmentize -O style=native $HOME/Documents/Personal/Cheatsheets/commands/1_my_tools.md'
 alias mt=mytools
 cheat() {
     local ARG="${1:-README}"
     if [[ "$ARG" == "cd" ]]; then
-        cd /home/jakub/Documents/Personal/Cheatsheets/commands
+        cd $HOME/Documents/Personal/Cheatsheets/commands
     else
-        pygmentize -O style=native "/home/jakub/Documents/Personal/Cheatsheets/commands/$ARG.md"
+        pygmentize -O style=native "$HOME/Documents/Personal/Cheatsheets/commands/$ARG.md"
     fi
 }
 
-alias bkup='/home/jakub/Documents/scripts/backup/backup.sh'
+alias bkup='$HOME/Documents/scripts/backup/backup.sh'
 
 cdd() {
-    cd /run/media/jakub/$1
+    cd /run/media/$USER/$1
 }
 
 #alias ise=sh -c "unset LANG && unset QT_PLUGIN_PATH && source /opt/Xilinx/14.7/ISE_DS/settings64.sh && ise"
@@ -299,9 +307,29 @@ socksfox() {
 }
 
 
-export QT_QPA_PLATFORM='wayland;xcb'
+export QT_QPA_PLATFORM='xcb'
 export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
 [ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
 
 #if [ "$TMUX" = "" -a $TERM != "screen" ]; then tmux; fi
-alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias dotfiles='git --git-dir=$HOME/.dotfiles_old/ --work-tree=$HOME'
+
+alias em="emacsclient -nw -c -a 'emacs' --frame-parameters='((fullscreen . maximized))'"
+
+#alias chatgpt='chatgpt --model gpt-4o-mini-2024-07-18'
+alias gpt='$HOME/.conda/envs/gpt-cli/bin/gpt'
+
+alias vim='nvim'
+alias v='nvim'
+alias work.sh="$HOME/.screenlayout/Work.sh"
+
+export USER_ID=`id -u`
+export USERNAME=`whoami`
+export GROUP_ID=`id -g`
+
+alias pietro='feh --bg-scale /home/jakub/Downloads/image_2024_11_11T11_22_25_371Z.png && sleep 1 && feh --bg-scale /home/jakub/Pictures/Wallpapers/3sUrMn0.jpg'
+
+export DOTFILES_DIR="$(dirname "$(readlink -f "${(%):-%N}")")"
+
+# Load Secret Keys and Variables
+[ -f $DOTFILES_DIR/secret-keys.sh ] && source $DOTFILES_DIR/secret-keys.sh
