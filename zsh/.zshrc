@@ -3,6 +3,9 @@
 #        tmux attach -t main || tmux new -s main
 #fi
 
+for file in ~/.{exports,aliases,extra}; do
+	[ -r "$file" ] && [ -f "$file" ] && source "$file";
+done;
 
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/.config/emacs/bin:$PATH
