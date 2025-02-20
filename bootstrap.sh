@@ -18,7 +18,7 @@ if [ ! -d ~/.oh-my-zsh ]; then
 fi
 
 # List of directories to stow (excluding the script itself)
-MODULES=(zsh git emacs bin bash i3 tmux nvim vim nano)
+MODULES=(zsh git emacs bash i3 tmux nvim vim nano)
 
 # Stow each module
 for module in "${MODULES[@]}"; do
