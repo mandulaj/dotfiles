@@ -1,0 +1,13 @@
+services:
+  dotfiles:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - USERNAME=${USERNAME}
+        - GROUP_ID=${GROUP_ID}
+        - USER_ID=${USER_ID}
+        - PASSWORD=${PASSWORD}
+    image: dotfiles:latest
+    volumes:
+      - ./:/home/${USERNAME}/.dotfiles
