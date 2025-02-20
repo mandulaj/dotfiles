@@ -1,12 +1,21 @@
+# MIT License
+#
+# Copyright (c) 2025 Jakub Mandula
+
+# Export the root of the .dotfiles
+export DOTFILES_DIR="$(dirname "$(dirname "$(readlink -f "${(%):-%N}")")")"
 #if [ ! "$TMUX" ]; then
 
 #        tmux attach -t main || tmux new -s main
 #fi
 
+
+# Import exports, aliases and extras
 for file in ~/.{exports,aliases,extra}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 
+# Add more locations to path
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/.config/emacs/bin:$PATH
 
@@ -332,7 +341,6 @@ export GROUP_ID=`id -g`
 
 alias pietro='feh --bg-scale /home/jakub/Downloads/image_2024_11_11T11_22_25_371Z.png && sleep 1 && feh --bg-scale /home/jakub/Pictures/Wallpapers/3sUrMn0.jpg'
 
-export DOTFILES_DIR="$(dirname "$(readlink -f "${(%):-%N}")")"
 
 # Load Secret Keys and Variables
 [ -f $DOTFILES_DIR/secret-keys.sh ] && source $DOTFILES_DIR/secret-keys.sh
