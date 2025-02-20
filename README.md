@@ -28,6 +28,14 @@ git clone git@github.com:mandulaj/dotfiles.git .dotfiles && cd .dotfiles
 ### [nvim](./nvim)
 ### [tmux](./tmux)
 ### [vim](./vim)
+### [nvim](./nvim)
 ### [zsh](./zsh)
+
+## Docker test environment
+```bash
+docker compose build
+
+docker compose run -it dotfiles
+```
 
 
