@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+
+cheat() {
+    local ARG="${1:-README}"
+    if [[ "$ARG" == "cd" ]]; then
+        cd $HOME/Documents/Personal/Cheatsheets/commands
+    else
+        pygmentize -O style=native "$HOME/Documents/Personal/Cheatsheets/commands/$ARG.md"
+    fi
+}
+
+
+cdd() {
+    cd /run/media/$USER/$1
+}
+
+
+
+snapcd() {
+    if [[ $1 == -h || $1 == --help ]]; then
+        echo 'snapcd - cd to a snapshot'
+        echo '    snapcd -h/--help       - Print this help'
+        echo '    snapcd [-r[n]] [snap]  - Jump to current location to `n`-th last snapshot, or snapshot `snap` - Default jump to last snapshot'
+        echo '                           - if executed in snapshot without parameters, jumps back to main FS'
+        echo ''
+        echo '    snapcd -a[n] [snap]    - Jump to base directory of `n`-th last snapshot or snapshot `snap`'
+
+        return;
+    fi
+    SNAP_DIR="/home/.snapshots"
+    PWD=`pwd -P`
+
+    ## Absolute change to latest snapshot ( -a[n] )
+    if [[ $1 == -a* ]]; then
+
+        # Get any characters after -a
+        OFFSET=$(echo $1 | cut -c 3-)
+        if ! [[ "$OFFSET" =~ '^[1-9]+[0-9]*$' ]]; then
+            # Set the offset to 1 if the characters aren't numeric...
+            OFFSET=1
+        fi
+
+        REL_PATH=""
+        BASE=$SNAP_DIR
+        # Use 2nd param as snapshot number, else use the offset
+        ID=${2:-$(ls -1 /home/.snapshots | tail -n$OFFSET | head -1)}
+
+        echo "Absolute jump to snapshot $ID"
+
+    # Change back to original
+    elif [[ "$PWD" =~ ^/home/.snapshots/[0-9]+/snapshot/jakub* ]]; then
+        # We were in a snapshot, jump back to current snapshot
+        ID=0
+
+        REL_PATH=`pwd -P | cut -d/ -f7-`
+        BASE="/home/jakub"
+
+    else
+    # Change to snapshot in relative way
+
+        # Make sure we are in /home
+        if [[ "$PWD" =~ ^/home/jakub.* ]]; then
+            REL_PATH=`pwd -P | cut -d/ -f4-`
+        else
+            echo "You are not at HOME :)"
+            REL_PATH=""
+            return;
+        fi
+
+        # Jump to -r[nth] last snapshot
+        if [[ $1 == -r* ]]; then
+            OFFSET=$(echo $1 | cut -c 3-)
+            if ! [[ "$OFFSET" =~ '^[1-9]+[0-9]*$' ]]; then
+                OFFSET=1
+            fi
+            ID=$(ls -1 /home/.snapshots | tail -n$OFFSET | head -1)
+        else
+            OFFSET=1
+
+            ID=${1:-$(ls -1 /home/.snapshots | tail -n1)}
+        fi
+
+        BASE=$SNAP_DIR
+
+        echo "Relative jump to snapshot $ID"
+    fi
+
+
+    # Change back case
+    if [[ "$ID" -eq "0" ]]; then
+        DESTINATION="$BASE/$REL_PATH"
+
+    else
+
+        if [[ ! -d "$SNAP_DIR/$ID" ]]; then
+            echo "Snapshot $ID does not exist"
+            return
+        fi
+        DESTINATION="$BASE/$ID/snapshot/jakub/$REL_PATH"
+    fi
+
+    if [[ -d "$DESTINATION" ]]; then
+        cd $DESTINATION;
+    else
+        echo "Directory $REL_PATH does not exist"
+    fi
+}
+
+
+# Proxy Firefox
+#
+#
+socksfox() {
+    local socket="${1:-openwrt-public2}"
+    echo "$socket"
+    ssh -N -D 1337 $socket &;
+    firefox -P socks_proxy;
+    fg
+}
+

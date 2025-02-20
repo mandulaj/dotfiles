@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+
+export QT_QPA_PLATFORM='xcb'
+export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
+export USER_ID=`id -u`
+export USERNAME=`whoami`
+export GROUP_ID=`id -g`
