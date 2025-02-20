@@ -12,3 +12,5 @@
 [rerere]
 	enable = true
 	autoupdate = true
+[include]
+        path = .gitconfig.user

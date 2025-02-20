@@ -20,6 +20,13 @@ You must have `git` and `stow` installed for the rest to work
 git clone git@github.com:mandulaj/dotfiles.git .dotfiles && cd .dotfiles
 ./bootstrap.sh
 ```
+#### Git setup
+The git user config is stored separately in `~/.gitconfig.user` please modify as needed:
+```gitconfig
+[user]
+    name = Jakub Mandula
+    email = jakub@mandula.cz
+```
 
 ## Modules
 
