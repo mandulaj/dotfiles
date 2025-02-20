@@ -31,8 +31,10 @@ The git user config is stored separately in `~/.gitconfig.user` please modify as
 ## Modules
 
 ### [git](./git)
+### [emacs](./emacs)
 ### [i3](./i3)
 ### [nvim](./nvim)
+### [nano](./nano)
 ### [tmux](./tmux)
 ### [vim](./vim)
 ### [nvim](./nvim)
