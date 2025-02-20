@@ -244,7 +244,9 @@ client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color      
 # Floating notifications
 for_window [window_role="alert"] floating enable, focus no
 for_window [class="zoom"] floating enable, focus no
-for_window [class="gnome-screenshot"] floating enable, focus no
+for_window [class="gnome-screenshot"] floating enable, focus yes
+for_window [class="Gnome-screenshot"] floating enable, focus yes
+
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
