@@ -115,7 +115,7 @@ export LD_LIBRARY_PATH=LD_LIBRARY_PATH:/usr/local/lib
 export PATH=$PATH:$HOME/git/openeb/build/bin
 export PATH=$PATH:/opt/stm32cubeclt/STLink-gdb-server/bin
 
-source /home/jakub/git/openeb/build/utils/scripts/setup_env.sh
+[ -f $HOME/git/openeb/build/utils/scripts/setup_env.sh ] && source $HOME/git/openeb/build/utils/scripts/setup_env.sh
 
 alias metavision_studio='xhost "+local:*"; docker run -it  --privileged  -v /dev/bus/usb:/dev/bus/usb -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v $(pwd):/home/$USER/metavision -v /home/$USER/.config/Metavision\ Studio:/home/$USER/.config/Metavision\ Studio -e GDK_SCALE=0.5 --rm --net=host --shm-size 100000000000 metavisionsdk22_${USER} /bin/bash -c "metavision_studio; while /usr/bin/pgrep metavision >/dev/null; do sleep 1; done"'
 
