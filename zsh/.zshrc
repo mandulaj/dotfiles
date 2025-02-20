@@ -4,6 +4,7 @@
 
 # Export the root of the .dotfiles
 export DOTFILES_DIR="$(dirname "$(dirname "$(readlink -f "${(%):-%N}")")")"
+
 #if [ ! "$TMUX" ]; then
 
 #        tmux attach -t main || tmux new -s main
@@ -18,7 +19,7 @@ done;
 # Add more locations to path
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/.config/emacs/bin:$PATH
-
+export PATH=$DOTFILES_DIR/bin:$PATH
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 export AGNOSTER_DIR_BG=cyan
