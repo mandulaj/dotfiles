@@ -47,4 +47,23 @@ docker compose build
 docker compose run -it dotfiles
 ```
 
+## Adding new module
+
+1. Create new module folder and touch all the files to be stowed
+```bash
+mkdir -p new_module/.config/something
+touch new_module/.config/something/config.yaml
+```
+2. Adopt all the files with stow
+```bash
+stow -v --adopt new_module
+```
+3. Update the `bootstrap.sh` script and `README.md`
+
+# TODO
+
+- [ ] KiCad
+- [ ] ssh
+- [ ] Browser (Firefox and Brave)
+- [ ] vscode??? Really?
 
