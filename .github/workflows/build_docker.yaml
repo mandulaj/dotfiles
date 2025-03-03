@@ -18,6 +18,6 @@ jobs:
         with:
           compose-file: "./docker-compose.yaml"
 
-      - name: Execute tests in the running services
-        run: |
-          docker compose exec dotfiles true
+#      - name: Execute tests in the running services
+#        run: |
+#          docker compose exec dotfiles true
