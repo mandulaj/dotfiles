@@ -27,7 +27,8 @@ export PATH=$PATH:/opt/stm32cubeclt/STLink-gdb-server/bin
 export ZSH="$HOME/.oh-my-zsh"
 
 # Theme
-export AGNOSTER_DIR_BG=cyan
+export AGNOSTER_DIR_BG=cyan # Default
+[ -f ~/.zshrc_theme ] && source ~/.zshrc_theme
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
