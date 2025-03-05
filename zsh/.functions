@@ -113,7 +113,7 @@ snapcd() {
 socksfox() {
     local socket="${1:-openwrt-public2}"
     echo "$socket"
-    ssh -N -D 1337 $socket &;
+    ssh -N -D 1337 $socket &
     firefox -P socks_proxy;
     fg
 }

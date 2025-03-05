@@ -19,6 +19,9 @@ alias lt='ls -1ltF --si'
 alias l='ll'
 alias sl='ls'
 
+alias df='df -h'                          # human-readable sizes
+alias free='free -m'                      # show sizes in MB
+alias more=less
 #alias matlab='/usr/local/MATLAB/R2017a/bin/matlab'
 
 # VPN helpers
@@ -37,7 +40,7 @@ alias swoff='sudo swapoff -a'
 
 #BTRFS
 #
-alias cp='cp --reflink=auto '
+alias cp='cp -i --reflink=auto '
 
 alias bdu='btrfs fi du --si -s'
 alias bdf='btrfs fi usage --si -T'
