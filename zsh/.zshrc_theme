@@ -1,3 +1,15 @@
 # Theme
-export AGNOSTER_DIR_BG="208;5"
-export AGNOSTER_CONTEXT_FG="208;5"
+
+case "$(hostname)" in
+    "mars")
+        export AGNOSTER_DIR_BG="208;5"
+        export AGNOSTER_CONTEXT_FG="208;5"
+        ;;
+    "venus")
+        export AGNOSTER_DIR_BG="yellow"
+        export AGNOSTER_CONTEXT_FG="yellow"
+        ;;
+    *)
+        export AGNOSTER_DIR_BG="cyan"
+        ;;
+esac
