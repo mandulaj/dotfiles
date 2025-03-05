@@ -22,6 +22,7 @@ export PATH=$HOME/.config/emacs/bin:$PATH
 export PATH=$DOTFILES_DIR/bin:$PATH
 export PATH=$PATH:$HOME/git/openeb/build/bin
 export PATH=$PATH:/opt/stm32cubeclt/STLink-gdb-server/bin
+export PATH=$PATH:$HOME/.local/bin
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -112,7 +113,7 @@ export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='vim'
+   export EDITOR='nvim'
 else
    export EDITOR='nvim'
 fi
@@ -140,3 +141,6 @@ export LD_LIBRARY_PATH=LD_LIBRARY_PATH:/usr/local/lib
 
 # Load Secret Keys and Variables
 [ -f $DOTFILES_DIR/secret-keys.sh ] && source $DOTFILES_DIR/secret-keys.sh
+
+# Draw GPU stats if available
+command -v gpustat &>/dev/null && gpustat
