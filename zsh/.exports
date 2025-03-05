@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# NVIM
+export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 
 export QT_QPA_PLATFORM='xcb'
 export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
