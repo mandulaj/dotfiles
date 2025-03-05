@@ -143,4 +143,4 @@ export LD_LIBRARY_PATH=LD_LIBRARY_PATH:/usr/local/lib
 [ -f $DOTFILES_DIR/secret-keys.sh ] && source $DOTFILES_DIR/secret-keys.sh
 
 # Draw GPU stats if available
-command -v gpustat &>/dev/null && gpustat
+command -v gpustat &>/dev/null && gpustat || true
