@@ -9,6 +9,10 @@ case "$(hostname)" in
         export AGNOSTER_DIR_BG="yellow"
         export AGNOSTER_CONTEXT_FG="yellow"
         ;;
+    "jupiter-pbl")
+        export AGNOSTER_DIR_BG="197;5"
+        export AGNOSTER_CONTEXT_FG="197;5"
+        ;;
     "neptune")
         export AGNOSTER_DIR_BG="99;5"
         export AGNOSTER_CONTEXT_FG="99;5"
