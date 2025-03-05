@@ -17,6 +17,7 @@ alias la='ls -1lAF --si'
 alias lr='ls -tRF --si'
 alias lt='ls -1ltF --si'
 alias l='ll'
+alias sl='ls'
 
 #alias matlab='/usr/local/MATLAB/R2017a/bin/matlab'
 
@@ -53,15 +54,15 @@ alias dus='du -sch $(ls -A) | sort -h'
 alias rs='rsync -ahPX --stats --info=progress2'
 
 # Docker stuff
-alias metavision_studio='xhost "+local:*"; docker run -it  --privileged  -v /dev/bus/usb:/dev/bus/usb -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v $(pwd):/home/$USER/metavision -v /home/$USER/.config/Metavision\ Studio:/home/$USER/.config/Metavision\ Studio -e GDK_SCALE=0.5 --rm --net=host --shm-size 100000000000 metavisionsdk22_${USER} /bin/bash -c "metavision_studio; while /usr/bin/pgrep metavision >/dev/null; do sleep 1; done"'
+alias metavision_studio='xhost "+local:*"; docker run -it  --privileged  -v /dev/bus/usb:/dev/bus/usb -e DISPLAY=$DISPLAY -v /home/$USER/.Xauthority:/home/$USER/.Xauthority -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v $(pwd):/home/$USER/metavision -v /home/$USER/.config/Metavision\ Studio:/home/$USER/.config/Metavision\ Studio -e GDK_SCALE=0.5 --rm --net=host --shm-size 100000000000 metavisionsdk22_${USER} /bin/bash -c "metavision_studio; while /usr/bin/pgrep metavision >/dev/null; do sleep 1; done"'
 
 #Ros Docker
 
-alias rviz='docker run -it --rm --privileged --net=host -e DISPLAY=$DISPLAY -v "/tmp/.X11-unix:/tmp/.X11-unix:rw" -v "$(pwd):/data" --ulimit nofile=1024:524288 -w /data osrf/ros:noetic-desktop rviz'
+alias rviz='docker run -it --rm --privileged --net=host -e DISPLAY=$DISPLAY -v "/tmp/.X11-unix:/tmp/.X11-unix:rw" -v "$(pwd):/data" -v /home/$USER/.Xauthority:/root/.Xauthority --ulimit nofile=1024:524288 -w /data osrf/ros:noetic-desktop rviz'
 alias rosbash='docker run -it --rm --privileged  --net=host -e DISPLAY=$DISPLAY -v "/tmp/.X11-unix:/tmp/.X11-unix:rw" -v "$(pwd):/data" --ulimit nofile=1024:524288 -w /data osrf/ros:noetic-desktop bash'
 alias roscore='docker run -it --rm --net=host --ulimit nofile=1024:524288 osrf/ros:noetic-desktop roscore'
 
-alias rviz2='docker run -it --rm --privileged --ipc=host --net=host -e DISPLAY=$DISPLAY -v "/tmp/.X11-unix:/tmp/.X11-unix:rw" -v /dev/shm:/dev/shm -v "$(pwd):/data" --ulimit nofile=1024:524288 -w /data osrf/ros:humble-desktop rviz2'
+alias rviz2='docker run -it --rm --privileged --ipc=host --net=host -e DISPLAY=$DISPLAY -v "/tmp/.X11-unix:/tmp/.X11-unix:rw" -v /home/$USER/.Xauthority:/root/.Xauthority -v /dev/shm:/dev/shm -v "$(pwd):/data" --ulimit nofile=1024:524288 -w /data osrf/ros:humble-desktop rviz2'
 alias rosbash2='docker run -it --rm --privileged --ipc=host --net=host -e DISPLAY=$DISPLAY -v "/tmp/.X11-unix:/tmp/.X11-unix:rw" -v /dev/shm:/dev/shm -v "$(pwd):/data" --ulimit nofile=1024:524288 -w /data osrf/ros:humble-desktop-full bash'
 
 
