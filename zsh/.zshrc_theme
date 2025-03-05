@@ -1,6 +1,10 @@
 # Theme
 
 case "$(hostname)" in
+    "mercury")
+        export AGNOSTER_DIR_BG="250;5"
+        export AGNOSTER_CONTEXT_FG="250;5"
+        ;;
     "mars")
         export AGNOSTER_DIR_BG="208;5"
         export AGNOSTER_CONTEXT_FG="208;5"
