@@ -10,10 +10,7 @@ if [ ! -d ~/.oh-my-zsh ]; then
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)";
 
     # Install plugins
-    git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-
+    $DOTFILES_DIR/scripts/install_zsh_plugins.sh
     rm ~/.zshrc
 fi
 
