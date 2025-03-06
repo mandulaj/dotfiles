@@ -88,8 +88,6 @@ alias em="emacsclient -nw -c -a 'emacs' --frame-parameters='((fullscreen . maxim
 #alias chatgpt='chatgpt --model gpt-4o-mini-2024-07-18'
 alias gpt='$HOME/.conda/envs/gpt-cli/bin/gpt'
 
-alias vim='nvim'
-alias v='nvim'
 alias work.sh="$HOME/.screenlayout/Work.sh"
 
 

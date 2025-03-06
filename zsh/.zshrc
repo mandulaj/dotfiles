@@ -112,11 +112,27 @@ source $ZSH/oh-my-zsh.sh
 export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='nvim'
+#if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='nvim'
+#else
+#   export EDITOR='nvim'
+#fi
+
+# Configure VIM
+if command -v nvim >/dev/null 2>&1; then
+    export EDITOR=nvim
+    alias vim=nvim
+    alias v=nvim
+elif command -v vim >/dev/null 2>&1; then
+    export EDITOR=vim
+    alias vim=vim
+    alias v=vim
 else
-   export EDITOR='nvim'
+    export EDITOR=nano
+    alias vim=nano
+    alias v=nano
 fi
+
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
