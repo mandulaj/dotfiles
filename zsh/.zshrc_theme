@@ -24,6 +24,10 @@ case "$(hostname)" in
     "sentinel")
         export AGNOSTER_DIR_BG="154;5"
         export AGNOSTER_CONTEXT_FG="154;5"
+	;;
+    "trinity")
+        export AGNOSTER_DIR_BG="84;5"
+        export AGNOSTER_CONTEXT_FG="84;5"
         ;;
     *)
         export AGNOSTER_DIR_BG="cyan"
