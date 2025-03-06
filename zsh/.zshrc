@@ -17,13 +17,6 @@ for file in ~/.{exports,aliases,extra,functions}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 
-# Add more locations to path
-# If you come from bash you might have to change your $PATH.
-export PATH=$HOME/.config/emacs/bin:$PATH
-export PATH=$DOTFILES_DIR/bin:$PATH
-export PATH=$PATH:$HOME/git/openeb/build/bin
-export PATH=$PATH:/opt/stm32cubeclt/STLink-gdb-server/bin
-export PATH=$PATH:$HOME/.local/bin
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -109,13 +102,6 @@ source $ZSH/oh-my-zsh.sh
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
-# Preferred editor for local and remote sessions
-#if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='nvim'
-#else
-#   export EDITOR='nvim'
-#fi
-
 # Configure VIM
 if command -v nvim >/dev/null 2>&1; then
     export EDITOR=nvim
@@ -148,7 +134,6 @@ fi
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
 #
-export LD_LIBRARY_PATH=LD_LIBRARY_PATH:/usr/local/lib
 
 [ -f $HOME/git/openeb/build/utils/scripts/setup_env.sh ] && source $HOME/git/openeb/build/utils/scripts/setup_env.sh
 
