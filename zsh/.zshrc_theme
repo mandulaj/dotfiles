@@ -40,6 +40,10 @@ case "$(hostname)" in
     "kvok")
         export AGNOSTER_DIR_BG="136;5"
         export AGNOSTER_CONTEXT_FG="136;5"
+	;;
+    "nexusx")
+        export AGNOSTER_DIR_BG="red"
+        export AGNOSTER_CONTEXT_FG="red"
         ;;
     *)
         export AGNOSTER_DIR_BG="cyan"
