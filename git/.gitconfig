@@ -8,7 +8,7 @@
 [pull]
         rebase = true
 [core]
-        editor = nvim
+        editor = $GIT_EDITOR
 [rerere]
 	enable = true
 	autoupdate = true
