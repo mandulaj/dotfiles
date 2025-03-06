@@ -30,15 +30,27 @@ The git user config is stored separately in `~/.gitconfig.user` please modify as
 
 ## Modules
 
-### [git](./git)
+### [bin](./bin)
+Various useful bins - this directory is directly in `PATH`
+### [alacritty](./alacritty)
+- default terminal emulator
+### [bash](./bash)
+- for backwards compatibility, bash files (load most of the `.aliases`, `.functions`, `.extras` etc.)
+### [btop](./btop)
 ### [emacs](./emacs)
+- emacs for personal mind map tracking
+### [git](./git)
+### [htop](./htop)
 ### [i3](./i3)
-### [nvim](./nvim)
+- i3 config
 ### [nano](./nano)
+### [nvim](./nvim)
+- default `EDITOR`
 ### [tmux](./tmux)
 ### [vim](./vim)
-### [nvim](./nvim)
+### [wget](./wget)
 ### [zsh](./zsh)
+- Most of zsh config
 
 ## Docker test environment
 ```bash
