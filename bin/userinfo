@@ -31,7 +31,7 @@ USER_GROUPS=$(id "$USER" | sed 's/.*groups=//')
 echo "🔹 Groups:             $USER_GROUPS"
 
 # Get account expiration info
-if CHAGE_INFO=$(chage -l "$USER" 2>/dev/null); then
+if CHAGE_INFO=$(sudo chage -l "$USER" 2>/dev/null); then
     echo ""
     echo "🔹 Account Expiration & Password Policy"
     echo "$CHAGE_INFO"
