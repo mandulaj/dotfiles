@@ -1,6 +1,14 @@
 #!/bin/bash
 
+ARCH=$(uname -m)
+if [ "$ARCH" = "aarch64" ]; then
+    ARCH="arm64"
+fi
+
+NVIM_FILE="nvim-linux-$ARCH.tar.gz"
+
 sudo rm -rf /opt/nvim
-curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
-sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
-rm nvim-linux-x86_64.tar.gz
+sudo mkdir /opt/nvim
+curl -LO https://github.com/neovim/neovim/releases/latest/download/${NVIM_FILE}
+sudo tar -C /opt/nvim -xzf $NVIM_FILE  --strip-components=1
+rm $NVIM_FILE
