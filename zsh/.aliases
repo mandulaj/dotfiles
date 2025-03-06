@@ -81,7 +81,7 @@ alias mt=mytools
 
 
 #if [ "$TMUX" = "" -a $TERM != "screen" ]; then tmux; fi
-alias dotfiles='git --git-dir=$HOME/.dotfiles_old/ --work-tree=$HOME'
+alias dotfiles='cd $DOTFILES_DIR'
 
 alias em="emacsclient -nw -c -a 'emacs' --frame-parameters='((fullscreen . maximized))'"
 
