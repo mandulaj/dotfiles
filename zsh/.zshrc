@@ -10,6 +10,7 @@ export DOTFILES_DIR="$(dirname "$(dirname "$(readlink -f "${(%):-%N}")")")"
 #        tmux attach -t main || tmux new -s main
 #fi
 
+umask 002
 
 # Import exports, aliases and extras
 for file in ~/.{exports,aliases,extra,functions}; do
