@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Check if username is provided
+if [ -z "$1" ]; then
+    echo "Usage: ${0##*/} <username>"
+    exit 1
+fi
+
+USER=$1
+
+# Check if user exists
+if ! id "$USER" &>/dev/null; then
+    echo "Error: User '$USER' does not exist."
+    exit 1
+fi
+
+
+# Get user details from /etc/passwd
+USER_INFO=$(getent passwd "$USER")
+IFS=':' read -r -a INFO <<< "$USER_INFO"
+
+echo "🔹 Username:           ${INFO[0]}"
+echo "🔹 UID:                ${INFO[2]}"
+echo "🔹 GID:                ${INFO[3]}"
+echo "🔹 Full Name:          ${INFO[4]:-N/A}"
+echo "🔹 Home Directory:     ${INFO[5]}"
+echo "🔹 Default Shell:      ${INFO[6]}"
+
+# Get groups
+USER_GROUPS=$(id "$USER" | sed 's/.*groups=//')
+echo "🔹 Groups:             $USER_GROUPS"
+
+# Get account expiration info
+if CHAGE_INFO=$(chage -l "$USER" 2>/dev/null); then
+    echo ""
+    echo "🔹 Account Expiration & Password Policy"
+    echo "$CHAGE_INFO"
+else
+    echo "🔹 Account Expiration Info: N/A (May not be a local user)"
+fi
+
+# Get shadow file info
+SHADOW_INFO=$(sudo getent shadow "$USER" 2>/dev/null)
+if [ -n "$SHADOW_INFO" ]; then
+    EXPIRATION_DAYS=$(echo "$SHADOW_INFO" | cut -d: -f8)
+    if [ -n "$EXPIRATION_DAYS" ] && [ "$EXPIRATION_DAYS" != "" ]; then
+        EXPIRATION_DATE=$(date -d "1970-01-01 +$EXPIRATION_DAYS days" 2>/dev/null)
+        echo "🔹 Account Expires On: $EXPIRATION_DATE"
+    fi
+fi
+
+# Get last login info
+echo ""
+echo "🔹 Last Logins:"
+lastlog -u "$USER"
