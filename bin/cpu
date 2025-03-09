@@ -1,0 +1,31 @@
+#!/bin/bash
+
+
+if [[ "$#" -eq 0 ]]; then
+  COMMAND="list"
+else
+  COMMAND=$1
+fi
+
+function info() {
+  echo "CPU Governor set to $(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)"
+  fre=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq`
+  echo "$fre 1000000.0" | awk '{print "CPU Speed: " $1 / $2 "GHz"}'
+
+
+}
+
+## All other VPNs, handle with nmcli
+if [[ $COMMAND == "list" ]]; then
+  info
+elif [[ $COMMAND == "powersave" ]]; then
+  sudo cpupower frequency-set -g powersave
+  info
+elif [[ $COMMAND == "performance" ]]; then
+  sudo cpupower frequency-set -g performance
+  info
+else
+  echo "Unknown governor"
+  echo "Use powersave or performance"
+fi
+
