@@ -1,0 +1,20 @@
+#!/bin/bash
+
+
+DIR=${1:-./}
+
+# This script lists all git repositories in the current directory
+# that have unpushed commits.
+
+
+find $DIR -maxdepth 5 -type d -name .git -exec dirname {} \; | while read LINE; do
+    ( # start subshell
+        cd "$LINE" && \
+        result=`git cherry -v 2>/dev/null`; rc=$? && \
+
+        # if the stdout of git-cherry is not an empty string
+        if [ -n "$result" ]; then
+            echo $(pwd)
+        fi
+    ) # end subshell
+done
