@@ -92,3 +92,27 @@ alias work.sh="$HOME/.screenlayout/Work.sh"
 
 
 alias bkup='$HOME/Documents/scripts/backup/backup.sh'
+
+
+exists() { command -v "$1" &>/dev/null; }
+# Alias a command to run nicely.
+nicealias() {
+  if exists "$1"; then
+    # shellcheck disable=2139,2140
+    alias "$1"="nice $1"
+  fi
+}
+
+# Automatically run these commands nicely.
+nicealias bazel
+nicealias bzip2
+nicealias fedpkg
+nicealias gzip
+nicealias make
+nicealias mock
+nicealias rpmbuild
+nicealias xz
+nicealias ffmpeg
+
+alias yay='nice yay --sudoloop'
+
