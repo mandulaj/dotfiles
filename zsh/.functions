@@ -52,8 +52,17 @@ snapcd() {
         # We were in a snapshot, jump back to current snapshot
         ID=0
 
-        REL_PATH=`pwd -P | cut -d/ -f7-`
-        BASE="/home/jakub"
+        if [[ $1 == -r* ]]; then
+            OFFSET=$(echo $1 | cut -c 3-)
+            if ! [[ "$OFFSET" =~ '^[1-9]+[0-9]*$' ]]; then
+                OFFSET=1
+            fi
+            ID=$(ls -1 /home/.snapshots | tail -n$OFFSET | head -1)
+            BASE=$SNAP_DIR
+        else
+            REL_PATH=`pwd -P | cut -d/ -f7-`
+            BASE="/home/jakub"
+        fi
 
     else
     # Change to snapshot in relative way
@@ -97,6 +106,7 @@ snapcd() {
             return
         fi
         DESTINATION="$BASE/$ID/snapshot/jakub/$REL_PATH"
+        grep "<date>" "$BASE/$ID/info.xml" | sed -E 's|.*<date>(.*)</date>.*|\1|'
     fi
 
     if [[ -d "$DESTINATION" ]]; then
