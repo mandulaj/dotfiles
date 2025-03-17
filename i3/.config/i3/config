@@ -264,7 +264,7 @@ bar {
 }
 
 # Default apps
-exec --no-startup-id slack
+#exec --no-startup-id slack
 exec --no-startup-id element-desktop
 exec --no-startup-id keepassxc
 exec_always --no-startup-id feh --bg-scale /home/$USER/Pictures/Wallpapers/3sUrMn0.jpg
