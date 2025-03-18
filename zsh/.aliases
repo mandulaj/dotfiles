@@ -56,6 +56,9 @@ alias dus='du -sch $(ls -A) | sort -h'
 # RSYNC
 alias rs='rsync -ahPX --stats --info=progress2'
 
+# SSH Tmux new session
+alias sshn='ssh -P new'
+
 # Docker stuff
 alias metavision_studio='xhost "+local:*"; docker run -it  --privileged  -v /dev/bus/usb:/dev/bus/usb -e DISPLAY=$DISPLAY -v /home/$USER/.Xauthority:/home/$USER/.Xauthority -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v $(pwd):/home/$USER/metavision -v /home/$USER/.config/Metavision\ Studio:/home/$USER/.config/Metavision\ Studio -e GDK_SCALE=0.5 --rm --net=host --shm-size 100000000000 metavisionsdk22_${USER} /bin/bash -c "metavision_studio; while /usr/bin/pgrep metavision >/dev/null; do sleep 1; done"'
 
