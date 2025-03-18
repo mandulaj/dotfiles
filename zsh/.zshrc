@@ -7,8 +7,9 @@ export DOTFILES_DIR="$(dirname "$(dirname "$(readlink -f "${(%):-%N}")")")"
 
 
 # Start tmux automatically when using an interactive SSH session
-if [[ -n "$SSH_CONNECTION" && -z "$TMUX" && "$TERM" != "dumb" && -t 0 ]]; then
+if [[ -n "$SSH_CONNECTION" && -z "$TMUX" && "$TERM" != "dumb" && -t 0 && -z "$NO_TMUX" ]]; then
     if command -v tmux >/dev/null 2>&1; then
+	export SSH_AUTH_SOCK=$HOME/.ssh/ssh_auth_sock
     	tmux attach-session -t main || tmux new-session -s main
     	exit;
     fi
