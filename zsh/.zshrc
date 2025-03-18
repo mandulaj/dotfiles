@@ -106,17 +106,14 @@ source $ZSH/oh-my-zsh.sh
 if command -v nvim >/dev/null 2>&1; then
     export EDITOR=nvim
     alias vim=nvim
-    alias v=nvim
     export GIT_EDITOR=nvim
 elif command -v vim >/dev/null 2>&1; then
     export EDITOR=vim
     alias vim=vim
-    alias v=vim
     export GIT_EDITOR=vim
 else
     export EDITOR=nano
     alias vim=nano
-    alias v=nano
     export GIT_EDITOR=nano
 fi
 
