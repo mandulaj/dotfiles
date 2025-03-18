@@ -5,10 +5,14 @@
 # Export the root of the .dotfiles
 export DOTFILES_DIR="$(dirname "$(dirname "$(readlink -f "${(%):-%N}")")")"
 
-#if [ ! "$TMUX" ]; then
 
-#        tmux attach -t main || tmux new -s main
-#fi
+# Start tmux automatically when using an interactive SSH session
+if [[ -n "$SSH_CONNECTION" && -z "$TMUX" && "$TERM" != "dumb" && -t 0 ]]; then
+    if command -v tmux >/dev/null 2>&1; then
+    	tmux attach-session -t main || tmux new-session -s main
+    	exit;
+    fi
+fi
 
 umask 002
 
