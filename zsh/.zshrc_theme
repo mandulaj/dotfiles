@@ -49,6 +49,10 @@ case "$(hostname)" in
         export AGNOSTER_DIR_BG="109;5"
         export AGNOSTER_CONTEXT_FG="109;5"
         ;;
+    "philipp-gpt")
+        export AGNOSTER_DIR_BG="79;5"
+        export AGNOSTER_CONTEXT_FG="79;5"
+        ;;
     *)
         export AGNOSTER_DIR_BG="cyan"
         ;;
