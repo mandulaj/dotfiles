@@ -53,6 +53,8 @@ alias snapls='snapper -c home list --columns number,type,pre-number,date'
 
 alias dus='du -sch $(ls -A) | sort -h'
 
+alias ncdu='ncdu --color=dark'
+
 # RSYNC
 alias rs='rsync -ahPX --stats --info=progress2'
 
