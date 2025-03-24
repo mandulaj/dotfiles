@@ -74,6 +74,12 @@ vim.opt.scrolloff = 20
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
+vim.filetype.add({
+	pattern = {
+		["~/.ssh/config.d/*"] = "sshconfig",
+		["~/.ssh/hosts/*"] = "sshconfig",
+	},
+})
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
