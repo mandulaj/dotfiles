@@ -91,7 +91,7 @@
            :target (file "paper/%<%Y%m%d%H%M%S>-${slug}.org")
            :unnarrowed t)
           ("s" "student" plain
-           ,(format "#+title: ${title}\n#+date: %%U\n\n* Tasks\n** TODO Set up server access for ${title} \n** TODO ${title} Kickoff meeting\n** TODO ${title} Task description\n\n %%[%s/.template/student.org]" org-roam-directory)
+           ,(format "#+title: ${title}\n#+date: %%U\n#+filetags: student\n\n* Tasks\n** TODO Set up server access for ${title} \n** TODO ${title} Kickoff meeting\n** TODO ${title} Task description\n\n %%[%s/.template/student.org]" org-roam-directory)
            :target (file "phd/%<%Y%m%d%H%M%S>-${slug}.org")
            :unnarrowed t)))
 ;;          ("i" "invoice" plain
