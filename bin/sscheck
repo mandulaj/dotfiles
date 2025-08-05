@@ -3,7 +3,7 @@
 NC='\033[0m' # No Color
 RED="\033[1;31m"
 COLOR_ID=31
-for server in mars trinity venus mercury neptune sentinel jupiter; do
+for server in mars trinity venus mercury neptune sentinel jupiter ptz; do
     COLOR="\033[1;${COLOR_ID}m"
     printf "${COLOR}$server${NC} "
     SSH_RES=$(ssh -o ConnectTimeout=3 -t $server uptime -p 2> /dev/null || echo "${RED}✗${NC}")
