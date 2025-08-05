@@ -205,6 +205,36 @@ require("lazy").setup({
 		end,
 	},
 	{
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
+		build = ":Copilot auth",
+		event = "BufReadPost",
+		opts = {
+			suggestion = {
+				enabled = not vim.g.ai_cmp,
+				auto_trigger = true,
+				hide_during_completion = vim.g.ai_cmp,
+				keymap = {
+					accept = false, -- handled by nvim-cmp / blink.cmp
+					next = "<M-]>",
+					prev = "<M-[>",
+				},
+			},
+			panel = { enabled = false },
+			filetypes = {
+				markdown = true,
+				help = true,
+			},
+		},
+	},
+	{
+		"zbirenbaum/copilot-cmp",
+		dependencies = { "zbirenbaum/copilot.lua" },
+		config = function()
+			require("copilot_cmp").setup()
+		end,
+	},
+	{
 		"mbbill/undotree",
 		config = function()
 			vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
@@ -768,7 +798,19 @@ require("lazy").setup({
 
 					-- If you prefer more traditional completion keymaps,
 					-- you can uncomment the following lines
-					["<Tab>"] = cmp.mapping.confirm({ select = true }),
+					-- ["<Tab>"] = cmp.mapping.confirm({ select = true }),
+					["<Tab>"] = vim.schedule_wrap(function(fallback)
+						local cmp = require("cmp")
+						local copilot_suggestion = require("copilot.suggestion")
+
+						if copilot_suggestion.is_visible() then
+							copilot_suggestion.accept()
+						elseif cmp.visible() then
+							cmp.confirm({ select = true })
+						else
+							fallback()
+						end
+					end),
 					-- ["<Tab>"] = cmp.mapping.select_next_item(),
 					-- ["<S-Tab>"] = cmp.mapping.select_prev_item(),
 
@@ -800,6 +842,7 @@ require("lazy").setup({
 					--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
 				}),
 				sources = {
+					{ name = "copilot" }, -- ADD THIS FIRST
 					{
 						name = "lazydev",
 						-- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
