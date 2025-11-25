@@ -140,10 +140,10 @@ fi
 #
 #
 
-[ -f $HOME/git/openeb/build/utils/scripts/setup_env.sh ] && source $HOME/git/openeb/build/utils/scripts/setup_env.sh
+#[ -f $HOME/git/openeb/build/utils/scripts/setup_env.sh ] && source $HOME/git/openeb/build/utils/scripts/setup_env.sh
 
 
-[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
+#[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
 
 
 # Load Secret Keys and Variables
