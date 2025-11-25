@@ -123,7 +123,19 @@ nicealias ffmpeg
 
 alias yay='nice yay --sudoloop'
 
-# Clipboard
-alias c='xclip -selection clipboard'
-alias v='xclip -o -selection clipboard'
+alias qr='sway-screenshot -m region  -o `mktemp -d` -- zbarimg 2> /dev/null | sed "s/^QR-Code://"'
 
+# Clipboard
+# If we are in Wayland use wl-clipboard
+if [ -n "$WAYLAND_DISPLAY" ]; then
+  alias c='wl-copy'
+  alias chtml='wl-copy --type text/html'
+  alias v='wl-paste'
+else
+  # Otherwise use xclip
+  alias c='xclip -selection clipboard'
+  alias chtml='xclip -selection clipboard -t text/html'
+  alias v='xclip -o -selection clipboard'
+fi
+
+alias convert='magick'
