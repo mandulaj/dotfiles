@@ -181,4 +181,9 @@
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start t))
 
+(with-eval-after-load 'evil-ex
+  ;; Redefine :q to always call the kill-current-buffer function.
+  ;; This closes the buffer but leaves the Emacs frame/session running.
+  (evil-ex-define-cmd "q" 'kill-current-buffer))
 
+(add-to-list 'warning-suppress-types '(org-element))
