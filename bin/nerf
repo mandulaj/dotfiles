@@ -1,0 +1,190 @@
+#!/bin/bash
+
+# ==============================================================================
+# nerf - A simple tool to restrict user resources via systemd cgroups
+# ==============================================================================
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# (Root check removed to allow running with sudo only when needed)
+
+# Default values
+TARGET_USER=""
+REVERT=false
+SET_PROPS=false
+
+# Property Variables
+CPU_CORES=""
+CPU_WEIGHT=""
+MEM_MAX=""
+MEM_HIGH=""
+TASKS_MAX="" # The "Extra" useful feature
+
+# Function to display usage
+usage() {
+    echo -e "${BLUE}Usage:${NC}"
+    echo -e "  nerf <username> [options]    Apply restrictions or view settings"
+    echo -e "  nerf -r <username>           Revert all restrictions (Unlimited power)"
+    echo -e ""
+    echo -e "${BLUE}Options:${NC}"
+    echo -e "  -c  <number>  Max CPU Cores (e.g., 2 or 0.5)"
+    echo -e "  -w  <1-10000> CPU Weight/Share (Default: 100). Lower = less priority when busy."
+    echo -e "  -M  <size>    Memory Max (Hard Limit, e.g., 4G, 512M). OOM Killer strikes if hit."
+    echo -e "  -m  <size>    Memory High (Throttling Limit, e.g., 3.5G). Slows down before killing."
+    echo -e "  -t  <number>  Max Tasks/Processes (e.g., 100). Prevents fork bombs."
+    echo -e "  -r            Revert/Remove all limits."
+    echo -e ""
+    echo -e "${BLUE}Examples:${NC}"
+    echo -e "  nerf john                     # Show current settings"
+    echo -e "  nerf john -c 2                # Limit john to 2 CPUs"
+    echo -e "  nerf john -M 4G -m 3.5G       # Limit RAM: Kill at 4G, throttle at 3.5G"
+    echo -e "  nerf john -c 0.5 -t 50        # 50% of one core, max 50 processes"
+    exit 1
+}
+
+# Parse Arguments
+# We loop through arguments manually to handle the mix of flags and positional username
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -c) CPU_CORES="$2"; SET_PROPS=true; shift 2 ;;
+        -w) CPU_WEIGHT="$2"; SET_PROPS=true; shift 2 ;;
+        -M) MEM_MAX="$2"; SET_PROPS=true; shift 2 ;;
+        -m) MEM_HIGH="$2"; SET_PROPS=true; shift 2 ;;
+        -t) TASKS_MAX="$2"; SET_PROPS=true; shift 2 ;;
+        -r) REVERT=true; shift ;;
+        -h|--help) usage ;;
+        -*) echo -e "${RED}Unknown option: $1${NC}"; usage ;;
+        *)
+            if [[ -z "$TARGET_USER" ]]; then
+                TARGET_USER="$1"
+                shift
+            else
+                echo -e "${RED}Error: Multiple usernames provided or bad syntax.${NC}"
+                usage
+            fi
+            ;;
+    esac
+done
+
+# Validate User
+if [[ -z "$TARGET_USER" ]]; then
+    echo -e "${RED}Error: No username provided.${NC}"
+    usage
+fi
+
+if ! id "$TARGET_USER" &>/dev/null; then
+    echo -e "${RED}Error: User '$TARGET_USER' does not exist.${NC}"
+    exit 1
+fi
+
+# Get User ID and Slice Name
+USER_UID=$(id -u "$TARGET_USER")
+SLICE="user-${USER_UID}.slice"
+
+# ==============================================================================
+# LOGIC: REVERT
+# ==============================================================================
+if [ "$REVERT" = true ]; then
+    echo -e "${YELLOW}Reverting limits for $TARGET_USER ($SLICE)...${NC}"
+    # Use sudo for privileged systemctl operations
+    sudo systemctl revert "$SLICE"
+    sudo systemctl daemon-reload
+    echo -e "${GREEN}Success: $TARGET_USER is now unrestricted.${NC}"
+    exit 0
+fi
+
+# ==============================================================================
+# LOGIC: APPLY SETTINGS
+# ==============================================================================
+if [ "$SET_PROPS" = true ]; then
+    echo -e "${BLUE}Applying limits to $TARGET_USER...${NC}"
+
+    CMD_ARGS=""
+
+    # Handle CPU Cores (Input: 2 -> Output: CPUQuota=200%)
+    if [[ -n "$CPU_CORES" ]]; then
+        # Check if python or bc exists for float math, otherwise fallback to simple shell integer math
+        if command -v bc &> /dev/null; then
+            PERCENT=$(echo "$CPU_CORES * 100" | bc | cut -d'.' -f1)
+        else
+            # Simple integer math fallback
+            PERCENT=$((CPU_CORES * 100))
+        fi
+        CMD_ARGS="$CMD_ARGS CPUQuota=${PERCENT}%"
+        echo -e "  -> CPU Limit: ${YELLOW}${CPU_CORES} Cores${NC} (${PERCENT}%)"
+    fi
+
+    # Handle CPU Weight
+    if [[ -n "$CPU_WEIGHT" ]]; then
+        CMD_ARGS="$CMD_ARGS CPUWeight=$CPU_WEIGHT"
+        echo -e "  -> CPU Weight: ${YELLOW}$CPU_WEIGHT${NC}"
+    fi
+
+    # Handle Memory Max (Hard Limit)
+    if [[ -n "$MEM_MAX" ]]; then
+        CMD_ARGS="$CMD_ARGS MemoryMax=$MEM_MAX"
+        echo -e "  -> Memory Max: ${YELLOW}$MEM_MAX${NC} (Hard Limit)"
+    fi
+
+    # Handle Memory High (Soft Limit)
+    if [[ -n "$MEM_HIGH" ]]; then
+        CMD_ARGS="$CMD_ARGS MemoryHigh=$MEM_HIGH"
+        echo -e "  -> Memory High: ${YELLOW}$MEM_HIGH${NC} (Throttling)"
+    fi
+
+    # Handle Tasks Max (Process Count)
+    if [[ -n "$TASKS_MAX" ]]; then
+        CMD_ARGS="$CMD_ARGS TasksMax=$TASKS_MAX"
+        echo -e "  -> Tasks Max: ${YELLOW}$TASKS_MAX${NC} processes"
+    fi
+
+    # Apply the command with sudo
+    # We use eval/expansion carefully here.
+    sudo systemctl set-property "$SLICE" $CMD_ARGS
+
+    echo -e "${GREEN}Restrictions applied successfully.${NC}"
+    echo ""
+fi
+
+# ==============================================================================
+# LOGIC: SHOW STATUS (Runs if no flags set OR after applying)
+# ==============================================================================
+
+echo -e "${BLUE}Current Resource Limits for $TARGET_USER (UID: $USER_UID):${NC}"
+echo "--------------------------------------------------------"
+
+# We grab specific properties using systemctl show
+# Note: systemctl show returns raw values (bytes, microseconds).
+# systemctl cat is often cleaner for "what did I manually set?"
+
+# 1. Check for drop-in overrides (The "Nerfs")
+# systemctl cat usually works for non-root users on these files
+OVERRIDES=$(systemctl cat "$SLICE" | grep -E "^(CPUQuota|CPUWeight|MemoryMax|MemoryHigh|TasksMax)=")
+
+if [[ -z "$OVERRIDES" ]]; then
+    echo -e "${GREEN}No active restrictions (Running at system default)${NC}"
+else
+    # Pretty print the overrides
+    while IFS= read -r line; do
+        KEY=$(echo "$line" | cut -d= -f1)
+        VAL=$(echo "$line" | cut -d= -f2)
+        echo -e "  $KEY: \t${YELLOW}$VAL${NC}"
+    done <<< "$OVERRIDES"
+fi
+
+echo "--------------------------------------------------------"
+# Optional: Show current usage
+# Only works if the user is actually logged in or running processes
+if systemctl is-active --quiet "$SLICE"; then
+    echo -e "Current Usage:"
+    # Note: systemd-cgtop might require sudo on some hardened systems to see other users.
+    # We try it without sudo first to avoid prompt on simple status checks.
+    systemd-cgtop -1 -n 1 | grep "$SLICE" | awk '{print "  Tasks: "$2"  CPU: "$3"%  Memory: "$4}'
+else
+    echo -e "(User is not currently logged in, so no live usage stats available)"
+fi
