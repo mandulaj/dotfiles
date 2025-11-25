@@ -14,3 +14,9 @@
 	autoupdate = true
 [include]
         path = .gitconfig.user
+[diff]
+	tool = meld
+[push]
+	autoSetupRemote = true
+[commit]
+	gpgsign = false
