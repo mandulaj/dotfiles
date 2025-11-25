@@ -1,0 +1,38 @@
+
+include /etc/sway/config.d/*
+
+include ~/.config/i3/config
+
+
+# Sway-specific input config
+input type:pointer {
+    natural_scroll enabled
+}
+
+input type:touchpad {
+    natural_scroll enabled
+}
+
+unbindsym Print
+unbindsym $mod+Print
+bindsym  Print exec sway-screenshot -m output -o $HOME/Pictures/Screenshots
+bindsym  $mod+Print exec sway-screenshot -m region -o $HOME/Pictures/Screenshots
+
+
+unbindsym $mod+Shift+x
+bindsym $mod+Shift+x exec wdisplays &&  feh --bg-scale /home/$USER/Pictures/Wallpapers/3sUrMn0.jpg
+
+
+unbindsym Control+Mod1+Delete
+bindsym Control+Mod1+Delete exec --no-startup-id ~/.dotfiles/bin/sway-lock-script.sh
+
+
+for_window [app_id=".*"] inhibit_idle fullscreen
+for_window [class=".*"] inhibit_idle fullscreen
+# Idle & lid management
+exec_always pkill swayidle; exec swayidle -w \
+    timeout 120 ~/.dotfiles/bin/sway-lock-script.sh  \
+    resume 'swaymsg "output * dpms on"'
+
+
+exec_always pkill kanshi; exec kanshi

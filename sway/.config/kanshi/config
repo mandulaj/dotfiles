@@ -1,0 +1,5 @@
+profile {
+  output "Dell Inc. DELL U2719D 25JGV13" mode 2560x1440@60Hz position 2560,2860 scale 1.0
+  output "Dell Inc. DELL U2719D 42NYQ83" mode 2560x1440@60Hz position 0,2860 scale 1.0
+  output "BOE 0x0A42 Unknown" mode 1920x1200@60Hz position 1661,4300 scale 1.0
+}
