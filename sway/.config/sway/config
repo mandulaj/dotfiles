@@ -31,8 +31,9 @@ for_window [app_id=".*"] inhibit_idle fullscreen
 for_window [class=".*"] inhibit_idle fullscreen
 # Idle & lid management
 exec_always pkill swayidle; exec swayidle -w \
-    timeout 120 ~/.dotfiles/bin/sway-lock-script.sh  \
-    resume 'swaymsg "output * dpms on"'
+    timeout 300 '~/.dotfiles/bin/sway-lock-script.sh'  \
+    resume 'swaymsg "output * dpms on"' \
+    before-sleep '~/.local/bin/sway-lock-script.sh'
 
 
 exec_always pkill kanshi; exec kanshi
