@@ -7,9 +7,13 @@ export PATH="$PATH:/opt/nvim/bin"
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/.config/emacs/bin:$PATH
 export PATH=$DOTFILES_DIR/bin:$PATH
+export PATH="/opt/nvim-linux-x86_64/bin:$PATH"
 export PATH=$PATH:$HOME/git/openeb/build/bin
 export PATH=$PATH:/opt/stm32cubeclt/STLink-gdb-server/bin
-export PATH=$PATH:$HOME/.local/bin
+export PATH=$HOME/.local/bin:$PATH
+
+
+#
 
 export QT_QPA_PLATFORM='xcb'
 export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
