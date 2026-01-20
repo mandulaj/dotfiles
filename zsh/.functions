@@ -150,3 +150,55 @@ for_all_servers() {
         ssh -q -t "$server" "$1"
     done
 }
+
+
+autoload -Uz add-zsh-hook
+
+function _brb_capture_command() {
+    local cmd_str="$1"
+
+    # Check if the command being run is essentially just 'fg' (ignoring 'brb')
+    # We strip 'brb' temporarily to see if the core command is 'fg'
+    local core_cmd=$(echo "$cmd_str" | sed -E 's/[;&|[:space:]]+brb[[:space:]]*$//')
+
+    # If the user is running 'fg' (bare, without arguments like %2)
+    if [[ "$core_cmd" == "fg" ]]; then
+        # Zsh Magic: Find the job ID of the "current" job (marked with +)
+        # 1. (r)*:+* -> reverse search for value containing :+: (the current job marker)
+        # 2. (k)      -> return the key (Job ID) instead of the value
+        local job_id=${(k)jobstates[(r)*:+*]}
+
+        # If we found a valid job ID, grab its original text
+        if [[ -n "$job_id" ]]; then
+            typeset -g _BRB_CMD="${jobtexts[$job_id]}"
+            return
+        fi
+    fi
+
+    # Standard case: Just save exactly what the user typed
+    typeset -g _BRB_CMD="$cmd_str"
+}
+
+# 3. Add the hook to preexec
+add-zsh-hook preexec _brb_capture_command
+
+# Function for alert notifications using ntfy.sh
+brb() {
+    local exit_status=$?  # Capture the exit status before doing anything else
+    local token=$(< ~/.ntfy_token)  # Securely read the token
+    local status_icon="$([ $exit_status -eq 0 ] && echo white_check_mark || echo x)"
+    #local last_command=$(history | tail -n1 | sed -e 's/^[[:space:]]*[0-9]\{1,\}[[:space:]]*//' -e 's/[;&|][[:space:]]*alert$//')
+    local last_command=$(echo "$_BRB_CMD" | sed -E 's/[;&|[:space:]]+brb[[:space:]]*$//')
+
+    curl -s -X POST "https://ntfy.mandula.cz/alerts" \
+        -H "Authorization: Bearer $token" \
+        -H "Title: Terminal" \
+        -H "X-Priority: 3" \
+        -H "Tags: $status_icon" \
+        -d "Command: $last_command (Exit: $exit_status)" > /dev/null
+
+    #echo "Tags: $status_icon"
+    #echo "$last_command (Exit: $exit_status)"
+}
+
+
