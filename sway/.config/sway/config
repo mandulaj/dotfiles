@@ -7,11 +7,16 @@ include ~/.config/i3/config
 # Sway-specific input config
 input type:pointer {
     natural_scroll enabled
+    # natural_scroll disabled
 }
 
 input type:touchpad {
     natural_scroll enabled
+    tap enabled
 }
+bindgesture swipe:4:right workspace prev
+bindgesture swipe:4:left workspace next
+
 
 unbindsym Print
 unbindsym $mod+Print
@@ -33,7 +38,12 @@ for_window [class=".*"] inhibit_idle fullscreen
 exec_always pkill swayidle; exec swayidle -w \
     timeout 300 '~/.dotfiles/bin/sway-lock-script.sh'  \
     resume 'swaymsg "output * dpms on"' \
-    before-sleep '~/.local/bin/sway-lock-script.sh'
+    before-sleep '~/.dotfiles/bin/sway-lock-script.sh'
 
 
 exec_always pkill kanshi; exec kanshi
+
+
+output * bg /home/$USER/Pictures/Wallpapers/3sUrMn0.jpg fill
+
+bindswitch --locked lid:on exec systemctl suspend

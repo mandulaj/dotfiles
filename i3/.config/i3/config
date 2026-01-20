@@ -273,7 +273,11 @@ exec --no-startup-id emacsclient
 exec --no-startup-id betterbird
 exec --no-startup-id zotero
 exec --no-startup-id /usr/lib/gsd-xsettings
+
+# Notification Daemon
 exec --no-startup-id dunst
+
+# Cloud storage sync
 exec --no-startup-id nextcloud
 exec --no-startup-id megasync
 
