@@ -20,3 +20,5 @@
 	autoSetupRemote = true
 [commit]
 	gpgsign = false
+[pager]
+	branch = false
