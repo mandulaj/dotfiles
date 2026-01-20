@@ -189,10 +189,11 @@ brb() {
     local status_icon="$([ $exit_status -eq 0 ] && echo white_check_mark || echo x)"
     #local last_command=$(history | tail -n1 | sed -e 's/^[[:space:]]*[0-9]\{1,\}[[:space:]]*//' -e 's/[;&|][[:space:]]*alert$//')
     local last_command=$(echo "$_BRB_CMD" | sed -E 's/[;&|[:space:]]+brb[[:space:]]*$//')
+    local hostname=$(hostname)
 
     curl -s -X POST "https://ntfy.mandula.cz/alerts" \
         -H "Authorization: Bearer $token" \
-        -H "Title: Terminal" \
+        -H "Title: Terminal ($hostname)" \
         -H "X-Priority: 3" \
         -H "Tags: $status_icon" \
         -d "Command: $last_command (Exit: $exit_status)" > /dev/null
