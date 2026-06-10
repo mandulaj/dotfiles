@@ -184,7 +184,7 @@ assign [class="Element"] $ws7
 for_window [class="Element"] border pixel 1
 assign [class="betterbird"] $ws8
 for_window [class="betterbird"] border pixel 0
-assign [class="Zotero"] $ws9
+assign [app_id="Zotero"] $ws9
 for_window [class="Zotero"] border pixel 0
 assign [class="Emacs"] $ws10
 for_window [class="Emacs"] border pixel 0
@@ -266,7 +266,7 @@ bar {
 
 # Default apps
 #exec --no-startup-id slack
-exec --no-startup-id element-desktop
+exec --no-startup-id element-desktop --password-store="gnome-libsecret"
 exec --no-startup-id keepassxc
 exec_always --no-startup-id feh --bg-scale /home/$USER/Pictures/Wallpapers/3sUrMn0.jpg
 exec --no-startup-id emacsclient
