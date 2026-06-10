@@ -31,6 +31,8 @@ export LD_LIBRARY_PATH=LD_LIBRARY_PATH:/usr/local/lib
 
 # Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
 export PYTHONIOENCODING='UTF-8';
+export PYTHONPATH="$PYTHONPATH:/usr/local/lib/python3.14/site-packages"
+
 
 # Increase Bash history size. Allow 32³ entries; the default is 500.
 export HISTSIZE='32768';
