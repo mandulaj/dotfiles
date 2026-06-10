@@ -47,3 +47,10 @@ exec_always pkill kanshi; exec kanshi
 output * bg /home/$USER/Pictures/Wallpapers/3sUrMn0.jpg fill
 
 bindswitch --locked lid:on exec systemctl suspend
+
+# Bambu fix
+# Force Bambu Studio and its various sub-windows to float
+for_window [app_id="bambu-studio"] floating enable
+for_window [class="BambuStudio"] floating enable
+for_window [class="BambuStudio" title="(?i)error|warning|info|confirm|choose"] floating enable
+for_window [class="BambuStudio" window_role="pop-up"] floating enable
