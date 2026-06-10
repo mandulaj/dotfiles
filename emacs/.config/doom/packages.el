@@ -55,6 +55,7 @@
 (package! org-modern)
 
 (unpin! org-roam company-org-roam)
+(package! citar-org-roam)
 
 (unpin! org-roam)
 (package! org-roam-ui)

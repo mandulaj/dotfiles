@@ -187,3 +187,35 @@
   (evil-ex-define-cmd "q" 'kill-current-buffer))
 
 (add-to-list 'warning-suppress-types '(org-element))
+
+
+(use-package! citar
+  :custom
+  (citar-bibliography '("~/Documents/org/references.bib")) ; Path to your Zotero .bib
+  (citar-library-paths '("~/Zotero/storage"))              ; Path to PDF storage
+  (citar-notes-paths '("~/Documents/RoamNotes/references")) ; Where reference notes live
+  (org-cite-global-bibliography '("~/Documents/org/references.bib"))
+  (org-cite-insert-processor 'citar)
+  (org-cite-follow-processor 'citar)
+  (org-cite-activate-processor 'citar)
+  :config
+  ;; Optional: Visually indicate if a pdf or note exists in the menu
+  (setq citar-symbols
+        `((file ,(all-the-icons-faicon "file-o" :face 'all-the-icons-green :v-adjust -0.1) . " ")
+          (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue :v-adjust -0.3) . " ")
+          (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange :v-adjust 0.01) . " "))))
+
+(use-package! citar-org-roam
+  :after (citar org-roam)
+  :config
+  (citar-org-roam-mode)
+  (setq citar-org-roam-subdir "references") ;; Notes go into /RoamNotes/references/
+  (setq citar-org-roam-note-title-template "${title}")
+
+  ;; Create a specific capture template for literature notes
+  (add-to-list 'org-roam-capture-templates
+               '("r" "reference" plain
+                 "%?"
+                 :if-new (file+head "references/${citekey}.org"
+                                    "#+title: ${title}\n#+created: %U\n#+filetags: :reference:\n\n* Source\n")
+                 :unnarrowed t)))
