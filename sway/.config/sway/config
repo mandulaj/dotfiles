@@ -14,6 +14,11 @@ input type:touchpad {
     natural_scroll enabled
     tap enabled
 }
+
+input * {
+    xkb_numlock enabled
+    xkb_options caps:escape
+}
 bindgesture swipe:4:right workspace prev
 bindgesture swipe:4:left workspace next
 
