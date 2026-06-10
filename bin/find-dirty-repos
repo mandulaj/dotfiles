@@ -1,0 +1,74 @@
+#!/bin/bash
+
+
+# 1. Set default variables
+DIR="./"
+VERBOSE=0
+DEPTH=8
+
+# 2. Parse command-line arguments
+# "$#" is the number of arguments. We loop as long as there is at least 1.
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -h|--help)
+            echo "Usage: $0 [options] [directory]"
+            echo "Options:"
+            echo "  -h, --help     Show this help message"
+            echo "  -v, --verbose  Show the actual files with uncommitted changes"
+            echo ""
+            echo "Find git repositories (to a depth of 8) with uncommitted changes."
+            echo "Directory default: current directory (./)"
+            exit 0
+            ;;
+        -v|--verbose)
+            VERBOSE=1
+            shift # Move to the next argument
+            ;;
+        -d|--depth)
+            if [[ -n "$2" && "$2" != -* ]]; then
+                DEPTH="$2"
+                shift 2 # Move past the flag and its argument
+            else
+                echo "Error: --depth requires a numeric argument."
+                exit 1
+            fi
+            ;;
+        -*)
+            # Catch unsupported flags (e.g., -x)
+            echo "Error: Unknown option: $1"
+            echo "Use -h or --help for usage."
+            exit 1
+            ;;
+        *)
+            # If it doesn't start with '-', assume it's our target directory
+            DIR="$1"
+            shift # Move to the next argument
+            ;;
+    esac
+done
+
+if [ ! -d "$DIR" ]; then
+    echo "Error: $DIR is not a directory."
+    exit 1
+fi
+
+
+# This script lists all git repositories in the current directory
+# that have unpushed commits.
+
+
+find $DIR -maxdepth $DEPTH -type d -name .git -prune -exec dirname {} \; 2> /dev/null | while read LINE; do
+    ( # start subshell
+        cd "$LINE" && \
+        result=`git status --porcelain 2>/dev/null`; rc=$? && \
+
+        # if the stdout of git-cherry is not an empty string
+        if [ -n "$result" ]; then
+            echo $(pwd)
+
+            if [ $VERBOSE -eq 1 ]; then
+                git status
+            fi
+        fi
+    ) # end subshell
+done

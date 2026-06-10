@@ -3,6 +3,19 @@
 
 DIR=${1:-./}
 
+# help message
+if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+    echo "Usage: $0 [directory]"
+    echo "Find git repositories (to a depth of 8) with unpushed commits in the specified directory (default: current directory)."
+    exit 0
+fi
+
+if [ ! -d "$DIR" ]; then
+    echo "Error: $DIR is not a directory."
+    exit 1
+fi
+
+
 # This script lists all git repositories in the current directory
 # that have unpushed commits.
 
