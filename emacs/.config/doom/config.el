@@ -201,9 +201,9 @@
   :config
   ;; Optional: Visually indicate if a pdf or note exists in the menu
   (setq citar-symbols
-        `((file ,(all-the-icons-faicon "file-o" :face 'all-the-icons-green :v-adjust -0.1) . " ")
-          (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue :v-adjust -0.3) . " ")
-          (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange :v-adjust 0.01) . " "))))
+      (list (cons 'file (cons (nerd-icons-faicon "nf-fa-file_o" :face 'nerd-icons-green :v-adjust -0.1) " "))
+            (cons 'note (cons (nerd-icons-codicon "nf-cod-note" :face 'nerd-icons-blue :v-adjust -0.3) " "))
+            (cons 'link (cons (nerd-icons-octicon "nf-oct-link" :face 'nerd-icons-orange :v-adjust 0.01) " "))))
 
 (use-package! citar-org-roam
   :after (citar org-roam)
