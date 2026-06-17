@@ -36,3 +36,7 @@ vim.keymap.set("n", "<C-b>", "<C-b>zz")
 -- Make Shift+J and Shift+K jump 5 lines down/up
 vim.keymap.set({ "n", "v" }, "J", "5j", { desc = "Jump down 5 lines" })
 -- vim.keymap.set({ "n", "v" }, "K", "6k", { desc = "Jump up 5 lines" })
+
+-- Keep visual mode indenting
+vim.keymap.set("v", "<", "<gv")
+vim.keymap.set("v", ">", ">gv")
