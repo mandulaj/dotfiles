@@ -1,0 +1,59 @@
+#!/bin/bash
+
+show_disk=0
+
+# Parse command line flags
+while getopts "hd" opt; do
+  case $opt in
+    h)
+      echo "Usage: $0 [-h] [-d]"
+      echo "  -h    Display this help message"
+      echo "  -d    Display disk usage for each expired user's home directory"
+      exit 0
+      ;;
+    d)
+      show_disk=1
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+  esac
+done
+
+
+today=$(($(date +%s) / 86400))
+expired_users=$(sudo awk -F: -v today="$today" '$8 != "" && $8 < today {print $1}' /etc/shadow)
+
+
+if [ -z "$expired_users" ]; then
+  echo "No expired users found."
+  exit 0
+fi
+
+
+# Loop through and print results
+for user in $expired_users; do
+  if [ "$show_disk" -eq 1 ]; then
+    echo "User: $user"
+
+    # Define paths to check
+    paths=("/home/$user" "/scratch/$user" "/archive/$user")
+    found_any=0
+
+    for path in "${paths[@]}"; do
+      if [ -d "$path" ]; then
+        usage=$(sudo du -sh "$path" 2>/dev/null | cut -f1)
+        echo "  - $path: $usage"
+        found_any=1
+      fi
+    done
+
+    if [ "$found_any" -eq 0 ]; then
+      echo "  - [No active directories found in /home, /scratch, or /archive]"
+    fi
+    echo "" # Add a newline for readability between users
+  else
+    echo "$user"
+  fi
+done
