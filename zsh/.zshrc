@@ -158,3 +158,5 @@ export NVM_DIR="$HOME/.nvm"
 if [ -n "$TMUX" ]; then
     command -v gpustat &>/dev/null && gpustat || true
 fi
+
+. "$HOME/.local/bin/env"
