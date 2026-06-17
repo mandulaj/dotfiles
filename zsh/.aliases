@@ -85,8 +85,9 @@ alias diff=colordiff
 alias mytools='pygmentize -O style=native $HOME/Documents/Personal/Cheatsheets/commands/1_my_tools.md'
 alias mt=mytools
 
+#git
 alias gspp='git stash && git pull && git stash pop'
-
+alias gs='git status'
 
 #if [ "$TMUX" = "" -a $TERM != "screen" ]; then tmux; fi
 alias dotfiles='cd $DOTFILES_DIR'
