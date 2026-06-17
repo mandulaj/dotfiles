@@ -159,4 +159,6 @@ if [ -n "$TMUX" ]; then
     command -v gpustat &>/dev/null && gpustat || true
 fi
 
-. "$HOME/.local/bin/env"
+if [ -f "$HOME/.local/bin/env" ]; then
+    . "$HOME/.local/bin/env"
+fi
