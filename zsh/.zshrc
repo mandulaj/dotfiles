@@ -112,18 +112,18 @@ source $ZSH/oh-my-zsh.sh
 
 # Configure VIM
 if command -v nvim >/dev/null 2>&1; then
-    export EDITOR=nvim
-    alias vim=nvim
-    export GIT_EDITOR=nvim
+    _editor_path=$(command -v nvim)
 elif command -v vim >/dev/null 2>&1; then
-    export EDITOR=vim
-    alias vim=vim
-    export GIT_EDITOR=vim
+    _editor_path=$(command -v vim)
 else
-    export EDITOR=nano
-    alias vim=nano
-    export GIT_EDITOR=nano
+    _editor_path=$(command -v nano)
 fi
+
+export EDITOR=$_editor_path
+export GIT_EDITOR=$_editor_path
+export SUDO_EDITOR=$_editor_path
+export VISUAL=$_editor_path
+alias vim=$_editor_path
 
 
 # Compilation flags
