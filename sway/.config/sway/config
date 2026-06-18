@@ -59,3 +59,6 @@ for_window [app_id="bambu-studio"] floating enable
 for_window [class="BambuStudio"] floating enable
 for_window [class="BambuStudio" title="(?i)error|warning|info|confirm|choose"] floating enable
 for_window [class="BambuStudio" window_role="pop-up"] floating enable
+
+
+focus_on_window_activation focus

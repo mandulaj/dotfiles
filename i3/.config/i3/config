@@ -175,17 +175,29 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 
 
 assign [class="firefox"] $ws1
+assign [app_id="firefox"] $ws1
 for_window [class="firefox"] border pixel 1
+for_window [app_id="firefox"] border pixel 1
+
+assign [class="brave-browser"] $ws1
+assign [app_id="brave-browser"] $ws1
+for_window [class="brave-borwser"] border pixel 1
+for_window [app_id="brave-browser"] border pixel 1
+
 assign [class="Slack"] $ws7
 for_window [class="Slack"] border pixel 1
-assign [class="Skype"] $ws7
-for_window [class="Skype"] border pixel 1
+
 assign [class="Element"] $ws7
+assign [app_id="Element"] $ws7
 for_window [class="Element"] border pixel 1
+for_window [app_id="Element"] border pixel 1
+
 assign [class="betterbird"] $ws8
 for_window [class="betterbird"] border pixel 0
+
 assign [app_id="Zotero"] $ws9
 for_window [class="Zotero"] border pixel 0
+
 assign [class="Emacs"] $ws10
 for_window [class="Emacs"] border pixel 0
 
