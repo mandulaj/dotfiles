@@ -202,4 +202,6 @@ brb() {
     #echo "$last_command (Exit: $exit_status)"
 }
 
-
+copy() {
+ printf "\033]52;c;%s\a" "$(cat | base64 -w0)"
+}
