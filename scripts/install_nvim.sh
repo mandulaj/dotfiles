@@ -7,6 +7,9 @@ fi
 
 NVIM_FILE="nvim-linux-$ARCH.tar.gz"
 
+# Change to a temporary directory
+cd $(mktemp -d -t nvim-install-XXXX)
+
 sudo rm -rf /opt/nvim
 sudo mkdir /opt/nvim
 curl -LO https://github.com/neovim/neovim/releases/latest/download/${NVIM_FILE}
