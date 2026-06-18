@@ -1,26 +1,57 @@
 #!/bin/bash
 
 
-DIR=${1:-./}
+# Default configurations
+SEARCH_DIR="./"
+MAX_DEPTH=8
 
-# help message
-if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
-    echo "Usage: $0 [directory]"
-    echo "Find git repositories (to a depth of 8) with unpushed commits in the specified directory (default: current directory)."
-    exit 0
+# Help message function
+show_help() {
+    cat << EOF
+Usage: $(basename "$0") [OPTIONS] [DIRECTORY]
+
+Find Git repositories with unpushed commits.
+
+Options:
+  -h, --help       Display this help message and exit.
+  -d, --depth NUM  Set the maximum directory search depth (default: $MAX_DEPTH).
+
+Arguments:
+  DIRECTORY        The directory to start the search from (default: $SEARCH_DIR).
+EOF
+}
+
+while getopts "hd:" opt; do
+    case ${opt} in
+        h )
+            show_help
+            exit 0
+            ;;
+        d )
+            MAX_DEPTH="$OPTARG"
+            ;;
+        \? ) # Invalid option caught automatically
+            echo "Run '$(basename "$0") -h' for usage."
+            exit 1
+            ;;
+    esac
+done
+
+# Shift off the parsed options, leaving only the positional arguments
+shift $((OPTIND -1))
+
+# Capture the remaining argument as the directory, if provided
+if [[ "$#" -gt 0 ]]; then
+    SEARCH_DIR="$1"
 fi
 
-if [ ! -d "$DIR" ]; then
-    echo "Error: $DIR is not a directory."
-    exit 1
-fi
 
 
 # This script lists all git repositories in the current directory
 # that have unpushed commits.
 
 
-find $DIR -maxdepth 8 -type d -name .git -exec dirname {} \; | while read LINE; do
+find $SEARCH_DIR -maxdepth $MAX_DEPTH -type d -name .git -exec dirname {} \; | while read LINE; do
     ( # start subshell
         cd "$LINE" && \
         result=`git cherry -v 2>/dev/null`; rc=$? && \
