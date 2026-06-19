@@ -29,6 +29,8 @@ return {
 			"vimdoc",
 			"latex",
 			"gitcommit",
+			"zig",
+			"rust",
 		}
 		-- Installs any missing parsers (async; compiles on first run).
 		require("nvim-treesitter").install(parsers)

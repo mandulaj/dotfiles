@@ -1,3 +1,27 @@
+local conf = require("telescope.config").values
+local themes = require("telescope.themes")
+
+local function toggle_telescope(harpoon_files)
+	local file_paths = {}
+	for _, item in ipairs(harpoon_files.items) do
+		table.insert(file_paths, item.value)
+	end
+
+	local opts = themes.get_ivy({
+		prompt_title = "Harboon List",
+	})
+
+	require("telescope.pickers")
+		.new(opts, {
+			finder = require("telescope.finders").new_table({
+				results = file_paths,
+			}),
+			previewers = conf.file_previewer(opts),
+			sorter = conf.generic_sorter(opts),
+		})
+		:find()
+end
+
 return {
 	"ThePrimeagen/harpoon",
 	branch = "harpoon2",
@@ -14,6 +38,9 @@ return {
 			harpoon.ui:toggle_quick_menu(harpoon:list())
 		end)
 
+		vim.keymap.set("n", "<leader>fl", function()
+			toggle_telescope(harpoon:list())
+		end, { desc = "Open harpoon window" })
 		-- NOTE: <C-h> shadows the left-window nav set in config/keymaps.lua.
 		vim.keymap.set("n", "<C-h>", function()
 			harpoon:list():select(1)
