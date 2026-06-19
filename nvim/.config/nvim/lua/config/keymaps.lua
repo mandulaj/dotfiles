@@ -40,3 +40,8 @@ vim.keymap.set({ "n", "v" }, "J", "5j", { desc = "Jump down 5 lines" })
 -- Keep visual mode indenting
 vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
+
+-- Center toggling
+vim.keymap.set("n", "<leader>to", function()
+	vim.opt.scrolloff = 999 - vim.o.scrolloff
+end, { desc = "Toggle line center" })

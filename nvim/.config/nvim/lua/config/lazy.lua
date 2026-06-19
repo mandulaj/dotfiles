@@ -12,7 +12,12 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Every file under lua/plugins/ that returns a spec is imported automatically.
 require("lazy").setup({
-	{ import = "plugins" },
+	spec = {
+		{ import = "plugins" },
+	},
+	defaults = {
+		lazy = false,
+	},
 }, {
 	ui = {
 		icons = vim.g.have_nerd_font and {} or {
